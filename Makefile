@@ -1,12 +1,15 @@
-NAME = push_swap
+NAME = pushswap
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
-SRCS = main.c utils.c utils2.c opRotate.c opSwap.c opPush.c opReverserotate.c opSort.c opRadix.c split.c
+SRCS = main.c utils.c utils2.c opRotate.c opSwap.c opPush.c opReverserotate.c opSort.c opRadix.c split.c utilsmain.c
 OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
+
+
+.PHONY: all clean fclean re
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $@
@@ -21,6 +24,3 @@ fclean: clean
 	rm -f $(NAME)
 
 re: fclean all
-
-.PHONY: all clean fclean re
-

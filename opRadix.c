@@ -6,57 +6,67 @@
 /*   By: peazeved <peazeved@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 12:44:58 by peazeved          #+#    #+#             */
-/*   Updated: 2025/12/09 13:34:57 by peazeved         ###   ########.fr       */
+/*   Updated: 2026/01/15 17:48:19 by peazeved         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "struct.h"
 
-void ft_index(t_list *node)
+void	ft_index(t_list *node)
 {
-    t_list *i, *j;
-    int index;
+	t_list	*i;
+	t_list	*j;
+	int		index;
 
-    i = node;
-    while(i != NULL)
-    {
-        index = 0;
-        j = node;
-        while(j != NULL)
-        {
-            if(*(int*)j->data < *(int*)i->data)
-                index++;
-            j = j->next;
-        }
-        i->index = index;
-        i = i->next;
-    }
+	i = node;
+	while (i != NULL)
+	{
+		index = 0;
+		j = node;
+		while (j != NULL)
+		{
+			if (*(int *)j->data < *(int *)i->data)
+				index++;
+			j = j->next;
+		}
+		i->index = index;
+		i = i->next;
+	}
 }
 
-void ft_radixsort(t_list **stacka, t_list **stackb, int size)
+void	ft_radix2(int size, t_list **stacka, t_list **stackb, int bits)
 {
-    if(!*stacka || ft_list_size(*stacka) < 5)
-        return;
-    int mb;
-    int i = 0;
+	int	j;
+	int	num;
+	int	i;
 
-    mb = 0;
-    while ((size - 1) >> mb)
-        mb++;
-    while (i < mb)
-    {
-        int j = 0;
-        while (j < size)
-        {
-            int num = (*stacka)->index;
-            if (((num >> i) & 1) == 0)
-                ft_pb(stacka, stackb); 
-            else
-                ft_ra(stacka);
-            j++;
-        }
-        while (*stackb != NULL)
-            ft_pa(stacka, stackb);
-        i++;
-    }
+	j = 0;
+	num = 0;
+	i = 0;
+	while (i < bits)
+	{
+		j = 0;
+		while (j < size)
+		{
+			num = (*stacka)->index;
+			if (((num >> i) & 1) == 0)
+				ft_pb(stacka, stackb);
+			else
+				ft_ra(stacka);
+			j++;
+		}
+		while (*stackb != NULL)
+			ft_pa (stacka, stackb);
+		i++;
+	}
+}
+
+void	ft_radixsort(t_list **stacka, t_list **stackb, int size)
+{
+	int	b;
+
+	b = 0;
+	while ((size - 1) >> b)
+		b++;
+	ft_radix2(size, stacka, stackb, b);
 }

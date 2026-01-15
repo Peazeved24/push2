@@ -205,7 +205,7 @@ rrr → rra + rrb ao mesmo tempo
 #SAGRADO#
 
 a ft_shortbreak e a funcao sagrada para conseguir utilizar os meus sort de forma mais eficiente
-    - a shortbreak procura a posicao do meu valor MAx ou MIn que estou a procura
+    - a shortbreak procura a posicao do meu valor MIn que estou a procura
         - apos encontrar a posicao da mesma ou + proximo do meu inicio ou mais longe
                     - da uns dos comandos ou troca os primeiros 2 ! ou manda os ultimos 2 para o inicio
 com isso a minhas sort3 ficou melhor !
@@ -326,7 +326,8 @@ novo bug: (08/01/26)
 
         ...tive de fazer 2 splits! pois a minha primeira tinha linhas a mais...
 
-#include "struct.h"
+
+/*  #include "struct.h"
 
 
 
@@ -398,6 +399,7 @@ int ft_fw(char **ar, char *s)
 	}
 	return 1;
 }
+*/
 /*
 	- dar fill !
 		- pegar a palvra.
@@ -408,7 +410,7 @@ int ft_fw(char **ar, char *s)
 				- se nao , enquanto n chegar ao fim , pula os char.
 */
 
-char	**ft_split(char *s)
+/*char	**ft_split(char *s)
 {
 	int len = ft_cw(s);
 	char **ar = malloc(sizeof(char *) * (len + 1));
@@ -423,7 +425,7 @@ char	**ft_split(char *s)
 	}
 	ar[len] = NULL;
 	return ar;
-}
+}*/
 /*
 	- entender o len da palavra
 		criar o arr --- que recebe o tamanho total das palavras pegas/
@@ -437,7 +439,7 @@ char	**ft_split(char *s)
 		RETURN ARR'
 */
 
-int main()
+/*int main()
 {
 	char *s = " 1   5 6 7     4 ";
 	char **ar = ft_split(s);
@@ -445,7 +447,7 @@ int main()
 	while(ar[i])
 		printf("%s", ar[i++]);
 	return 0;
-}
+}*/
 
 /*
 int ft_space(char c)
@@ -518,3 +520,230 @@ int main()
 		printf("%s", ar[i++]);
 	return 0;
 }*/
+
+--------------------------------------
+
+NOVO DESAFIO ANTES DE FINALIZAR O PROJETO:
+
+    -fim do PROJETO
+            - a questao que falta:
+                    -modular o projeto + norminette == GG.
+
+            - aprender como evitar o msm erro --- encher a main de funcoes e comemecar a pensar nela como ... um "orquestrador" - e nao um executor.
+    A main só deve:
+        Inicializar 
+        Chamar módulos
+        Verificar erros
+        Finalizar   
+
+boa visualizacao de uma main:
+[ main ]
+   |
+   v
+[ parser ] ---> [ validator ]
+   |
+   v
+[ stack builder ]
+   |
+   v
+[ algorithm ]
+
+... 
+tentar ver as coisas como caixas onde cada uma tera a sua funcao ... e nao ,chamar funcao , por uma condicao , caso errado == dar free etc...
+    - ou seja so chama , se retornar (1 , NULL) faz x --- se n , poxima fase.
+ ..
+ ate agora a minha maior duvida esta aqui!!
+    - como posso usar uma main modular que -- usa varios argumentos( av[i] -- ac)
+    - como posso fazer isso sabendo que ainda tenho um arr - split + passar isso para a stack
+
+[ parser ] ---> [ validator ]
+   |
+   v
+[ stack builder ]??
+
+...
+    regras a serem seguidas:
+        - nao  pode haver funcoes explicitas.
+        -  gerir memoria etc.
+
+
+logo eu so preciso de uma funcao que  
+    - recebes os av[i]
+    - passar para um arr
+    
+
+ou seja - arr -> recebe args - passados pela a plit.
+    - save_atoi verifica se dentro do meu arry os args sao bons;
+        
+...
+
+apos algum tempo ->passei isto:
+    -> sem split e sem array
+/int main(int ac, char **av)
+{
+    int i = 1;
+    t_list *stacka = NULL;
+    t_list *stackb = NULL;
+    int val;
+
+    if(ac <= 2)
+        return 0;
+    while(i < ac)
+    {
+        if(!ft_save_atoi(av[i], &val)) // error aqui 
+            return 1;
+        if(ft_repeat_elem(stacka, val)) // error aqui
+            return 1;
+        ft_append(&stacka, &val, sizeof(int));
+        i++; 
+    }
+    ft_picksort(&stacka, &stackb , ft_list_size(stacka));
+    ft_freelist(&stacka);
+    ft_freelist(&stackb);
+}
+para isto !
+    -> ja com a split --- mass 0% modulada e bastante caotica.
+            ->que :
+    ->percorrer os args.
+    -> coloca no  arr -> com a split (av[i])! associa
+    -> percorre o array -> com a save_atoi -> entende se e legit(-, a etc sao removidos)
+    -> e como cada argumento valido sera passado para a stack -> entede se ha elementos repetidos.
+
+            caso n for legit -> frearr(ar)->error , return 1;
+int main(int ac, char **av)
+{
+    int i = 1;
+    int j = 0;
+    t_list *stacka = NULL;
+    t_list *stackb = NULL;
+    int val;
+    while(i < ac)
+    {
+        char **ar = ft_split(av[i]);
+        if(!ar || !ar[0])
+        {
+            write(1, "error\n", 6);
+            return 1;
+        }
+        j = 0; // reiniciar a contagem
+        while(ar[j]) // modular isto !!!!
+        {
+            if(!ft_save_atoi(ar[j], &val) ||ft_repeat_elem(stacka, val))
+            {
+                ft_free(ar);
+                write(1, "error\n", 6);
+                return 1;
+            }
+            j++;
+            ft_append(&stacka, &val, sizeof(int));
+        }
+        i++;
+        ft_free(ar);
+    }
+    ft_picksort(&stacka, &stackb , ft_list_size(stacka));
+    ft_freelist(&stacka);
+    ft_freelist(&stackb);
+    return 0;
+}
+para esta ideia:
+ 
+n sei o nome mais ideal mas -> 
+int ft_getarr(char *str, t_list *stacka) // tentar criar um arry que pega os digitos ? ->
+{
+    int j;
+    int val;
+    char **ar;
+    
+    ar = ft_split(str); // pega a minha string.
+    j = 0;
+    if(!ar || !ar[0]) // condicao de seguranca;
+    {
+        write(1, "error\n", 6);
+        return 1;
+    }
+    while(ar[j])
+    {
+        if(!ft_save_atoi(ar[j], &val)|| ft_repeat_elem(*stacka, val)) // associar os meu valores 
+        {
+            ft_free_arr(ar);
+            write(1, "arror\n", 6);
+            return  1;
+        }
+        j++;
+        ft_append(stacka, &val, sizeof(int));
+    }
+    free(ar);
+    return 0;
+}
+
+aqui tiro a ideia da " na main iniciliado o arr para depois fazer o parse nele para"
+-> cria uma funcao int ft_getarr(char *str, t_list *stacka) -> que pega os meus args[i] + stacka;
+
+    -> na funcao:
+        -> crio o arry = ft_split;
+        -> faco o parsing nele (se e null , se so contem 1 elem etc);
+        -> e percorre ele :
+            -> save atoi + repeat elem --- msm conceito so que caso der erro :
+                -> free no array, escreve erro , return 1;
+
+FINAL MAIN ->:
+    
+int main(int ac, char **av)
+{
+    int i = 1;
+    t_list *stacka = NULL;
+    t_list *stackb = NULL;
+    while(i < ac) // parsing de argumentos
+    {
+        if(!ft_getarr(av[i], &stacka))
+            return 1;
+        i++;
+    }
+    ft_picksort(&stacka, &stackb , ft_list_size(stacka));
+    ft_freelist(&stacka);
+    ft_freelist(&stackb);
+    return 0;
+}
+-> falta so acabar a save_atoi;
+
+/*
+    #include "struct.h"
+
+static int ft_strlen(char *s)
+{
+	int i = 0;
+	while(s[i])
+		i++;
+	return i;
+}
+
+char *ft_strjoin(char *s1, char *s2)
+{
+	int i = 0;
+	int j = 0;
+	int l1 = ft_strlen(s1);
+	int l2 = ft_strlen(s2);
+	if(!s1 || !s2)
+		return NULL;
+	char *s = malloc((l1 + l2) + 1);
+	if(!s)
+		return NULL;
+	while(i < l1)
+	{
+		s[i] = s1[i];
+		i++;
+	}
+	while(j < l2)
+		s[i++] = s2[j++];
+	s[i] = '\0';
+	return s;
+}
+int main()
+{
+	char a[] = "ola ";
+	char b[] = "mundo";
+	char *result = ft_strjoin(a, b);
+	printf("%s", result);
+	return 0;
+}
+*/

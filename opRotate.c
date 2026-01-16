@@ -6,7 +6,7 @@
 /*   By: peazeved <peazeved@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 14:53:09 by peazeved          #+#    #+#             */
-/*   Updated: 2026/01/15 17:55:22 by peazeved         ###   ########.fr       */
+/*   Updated: 2026/01/15 19:04:02 by peazeved         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ static void	ft_rotate(t_list **stack)
 	t_list	*node;
 	t_list	*last;
 
-	node = stack;
-	last = stack;
+	node = *stack;
+	last = *stack;
 	if (!*stack || !(*stack)->next)
 		return ;
 	while (last->next)

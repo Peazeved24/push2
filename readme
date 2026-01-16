@@ -578,7 +578,8 @@ ou seja - arr -> recebe args - passados pela a plit.
 ...
 
 apos algum tempo ->passei isto:
-    -> sem split e sem array
+    -> sem split e sem array:
+    
 /int main(int ac, char **av)
 {
     int i = 1;

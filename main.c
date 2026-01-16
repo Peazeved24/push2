@@ -6,7 +6,7 @@
 /*   By: peazeved <peazeved@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 14:24:30 by peazeved          #+#    #+#             */
-/*   Updated: 2026/01/15 17:16:59 by peazeved         ###   ########.fr       */
+/*   Updated: 2026/01/16 14:13:16 by peazeved         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,7 @@
 static void	ft_picksort(t_list **stacka, t_list **stackb, int size)
 {
 	if (ft_is_sorted(*stacka))
-	{
-		write (1, "sorted\n", 7);
 		return ;
-	}
 	if (size <= 5)
 	{
 		if (size == 2)

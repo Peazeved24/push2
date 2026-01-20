@@ -6,7 +6,7 @@
 /*   By: peazeved <peazeved@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 13:23:03 by peazeved          #+#    #+#             */
-/*   Updated: 2026/01/15 18:41:01 by peazeved         ###   ########.fr       */
+/*   Updated: 2026/01/20 14:39:04 by peazeved         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,6 @@ void				ft_index(t_list *node);
 void				ft_free_arr(char **ar);
 void				ft_freelist(t_list **head);
 char				**ft_split(char *s);
-int					ft_parsearr(char *str, t_list **stacka);
+int					ft_parse_arr(char *str, t_list **stacka);
 
 #endif

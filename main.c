@@ -6,7 +6,7 @@
 /*   By: peazeved <peazeved@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 14:24:30 by peazeved          #+#    #+#             */
-/*   Updated: 2026/01/16 14:13:16 by peazeved         ###   ########.fr       */
+/*   Updated: 2026/01/20 14:39:08 by peazeved         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,11 @@ int	main(int ac, char **av)
 	stackb = NULL;
 	while (i < ac)
 	{
-		if (ft_parsearr(av[i], &stacka))
+		if (ft_parse_arr(av[i], &stacka))
+		{
+			ft_freelist (&stacka);
 			return (1);
+		}
 		i++;
 	}
 	ft_picksort (&stacka, &stackb, ft_list_size(stacka));

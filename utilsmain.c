@@ -6,7 +6,7 @@
 /*   By: peazeved <peazeved@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 15:07:03 by peazeved          #+#    #+#             */
-/*   Updated: 2026/01/15 18:44:10 by peazeved         ###   ########.fr       */
+/*   Updated: 2026/01/20 14:38:57 by peazeved         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	ft_free_arr(char **ar)
 	free(ar);
 }
 
-int	ft_parsearr(char *str, t_list **stacka)
+int	ft_parse_arr(char *str, t_list **stacka)
 {
 	int		j;
 	int		val;
@@ -53,12 +53,12 @@ int	ft_parsearr(char *str, t_list **stacka)
 		if (!ft_save_atoi(ar[j], &val) || ft_repeat_elem(*stacka, val))
 		{
 			ft_free_arr(ar);
-			write(1, "error\n", 6);
+			write(1, "Error\n", 6);
 			return (1);
 		}
 		j++;
 		ft_append(stacka, &val, sizeof(int));
 	}
-	free(ar);
+	ft_free_arr(ar);
 	return (0);
 }
